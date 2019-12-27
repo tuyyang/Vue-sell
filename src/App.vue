@@ -13,7 +13,7 @@ import Goods from 'components/goods/goods'
 import Ratings from 'components/ratings/ratings'
 import Seller from 'components/seller/seller'
 import Tab from 'components/tab/tab'
-import {getSeller} from 'api/index'
+import {getSeller} from 'api'
 
 export default {
   name: 'app',
