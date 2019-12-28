@@ -94,7 +94,7 @@ import CartControl from 'components/cart-control/cart-control'
 // import RatingSelect from 'components/rating-select/rating-select'
 // import Split from "components/split/split";
 // import ratingMixin from "common/mixins/rating";
-// import popupMixin from "common/mixins/popup";
+import popupMixin from 'common/mixins/popup'
 
 const EVENT_SHOW="show"
 const EVENT_ADD="add"
@@ -102,7 +102,7 @@ const EVENT_LEAVE="leave"
 
 export default {
   name: "food",
-  // mixins: [ratingMixin, popupMixin],
+  mixins: [ratingMixin, popupMixin],
   props: {
     food: {
       type: Object

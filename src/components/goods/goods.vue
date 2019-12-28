@@ -10,7 +10,7 @@
         <template slot="bar" slot-scope="props">
           <cube-scroll-nav-bar
             direction="vertical"
-            :label="props.labels"
+            :labels="props.labels"
             :txts="barTxts"
             :current="props.current"
           >
@@ -36,12 +36,7 @@
           :title="good.name"
         >
           <ul>
-            <li
-              @click="selectFood(food)"
-              class="food-item"
-              v-for="food in good.foods"
-              :key="food.name"
-            >
+            <li class="food-item" v-for="food in good.foods" :key="food.name">
               <div class="icon">
                 <img :src="food.icon" width="57" height="57" />
               </div>
@@ -80,10 +75,9 @@
 
 <script>
 import {getGoods} from 'api'
-// import Foods from 'components/food/food'
-import ShopCart from 'components/shop-cart/shop-cart'
-import CartControl from 'components/cart-control/cart-control'
 import SupportIco from 'components/support-ico/support-ico'
+import CartControl from 'components/cart-control/cart-control'
+import ShopCart from 'components/shop-cart/shop-cart'
 import Bubble from 'components/bubble/bubble'
 
 export default {
@@ -99,6 +93,7 @@ export default {
   data() {
     return {
       goods: [],
+      selectedFood: {},
       scrollOptions: {
         click: false,
         directionLockThreshold: 0
@@ -110,15 +105,15 @@ export default {
       return this.data.seller
     },
     selectFoods() {
-      let foods=[]
+      let ret=[]
       this.goods.forEach((good) => {
         good.foods.forEach((food) => {
           if(food.count) {
-            foods.push(food)
+            ret.push(food)
           }
         })
       })
-      return foods
+      return ret
     },
     barTxts() {
       let ret=[]
@@ -128,11 +123,7 @@ export default {
         foods.forEach((food) => {
           count+=food.count||0
         })
-        ret.push({
-          type,
-          name,
-          count
-        })
+        ret.push({type, name, count})
       })
       return ret
     }
@@ -144,12 +135,10 @@ export default {
       })
     },
     selectFood(food) {
-      this.selectedFood=food
-      this._showFood()
-      this._showShopCartSticky()
+      this.selectFood=food
     },
-    onAdd(target) {
-      this.$refs.shopCart.drop(target)
+    onAdd() {
+      this.$refs.shopCart.drop()
     },
     _showFood() {
       this.foodComp=this.foodComp||this.$createFood({
@@ -166,35 +155,20 @@ export default {
         }
       })
       this.foodComp.show()
-    },
-    _showShopCartSticky() {
-      this.shopCartStickyComp=this.shopCartStickyComp||this.$createShopCartSticky({
-        $props: {
-          selectFoods: 'selectFoods',
-          deliveryPrice: this.seller.deliveryPrice,
-          minPrice: this.seller.minPrice,
-          fold: true
-        }
-      })
-      this.shopCartStickyComp.show()
-    },
-    _hideShopCartSticky() {
-      this.shopCartStickyComp.hide()
     }
   },
   components: {
     ShopCart,
     CartControl,
     SupportIco,
-    // Food,
     Bubble
   }
 }
 </script>
 
 <style lang='stylus' scoped>
-  @import '~common/stylus/mixin.styl'
-  @import '~common/stylus/variable.styl'
+  @import '~common/stylus/mixin'
+  @import '~common/stylus/variable'
 
   .goods
     position relative
@@ -205,7 +179,7 @@ export default {
       width 100%
       top 0
       left 0
-      bottom 48px
+      bottom 0
     >>> .cube-scroll-nav-bar
       width 80px
       white-space normal

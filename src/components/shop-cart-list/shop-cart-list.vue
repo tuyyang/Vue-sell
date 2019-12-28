@@ -39,7 +39,7 @@
 
 <script>
 import CartControl from 'components/cart-control/cart-control'
-// import popupMixin from 'common/mixins/popup'
+import popupMixin from 'common/mixins/popup'
 
 const EVENT_SHOW='show'
 const EVENT_ADD='add'
@@ -47,7 +47,7 @@ const EVENT_LEAVE='leave'
 
 export default {
   name: 'shop-cart-list',
-  // mixins: [popupMixin],
+  mixins: [popupMixin],
   props: {
     selectFoods: {
       type: Array,
