@@ -120,18 +120,6 @@ export default {
   computed: {
     ratings() {
       return this.food.ratings
-    },
-    computedRatings() {
-      let ret=[]
-      this.ratings.forEach((rating) => {
-        if(this.onlyContent&&!rating.text) {
-          return
-        }
-        if(this.selectType===ALL||this.selectType===rating.rateType) {
-          ret.push(rating)
-        }
-      })
-      return ret
     }
   },
   created() {
