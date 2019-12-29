@@ -92,9 +92,9 @@
 import moment from 'moment'
 import CartControl from 'components/cart-control/cart-control'
 import RatingSelect from 'components/rating-select/rating-select'
-import Split from "components/split/split";
-import ratingMixin from "common/mixins/rating";
-import popupMixin from "common/mixins/popup";
+import Split from 'components/split/split'
+import ratingMixin from 'common/mixins/rating'
+import popupMixin from 'common/mixins/popup'
 
 const EVENT_SHOW="show"
 const EVENT_ADD="add"
@@ -120,6 +120,18 @@ export default {
   computed: {
     ratings() {
       return this.food.ratings
+    },
+    computedRatings() {
+      let ret=[]
+      this.ratings.forEach((rating) => {
+        if(this.onlyContent&&!rating.text) {
+          return
+        }
+        if(this.selectType===ALL||this.selectType===rating.rateType) {
+          ret.push(rating)
+        }
+      })
+      return ret
     }
   },
   created() {
