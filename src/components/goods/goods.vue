@@ -99,6 +99,7 @@ export default {
   data() {
     return {
       goods: [],
+      selectedFood: {},
       scrollOptions: {
         click: false,
         directionLockThreshold: 0
@@ -157,6 +158,9 @@ export default {
           food: 'selectedFood'
         },
         $events: {
+          leave: () => {
+            this._hideShopCartList()
+          },
           add: (target) => {
             this.shopCartStickyComp.drop(target)
           },
@@ -186,7 +190,6 @@ export default {
     ShopCart,
     CartControl,
     SupportIco,
-    // Food,
     Bubble
   }
 }

@@ -97,7 +97,7 @@ export default {
     },
     totalCount() {
       let count=0
-      this.selectFood.forEach((food) => {
+      this.selectFoods.forEach((food) => {
         count+=food.count
       })
       return count

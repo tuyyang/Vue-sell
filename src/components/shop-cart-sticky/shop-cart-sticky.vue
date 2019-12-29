@@ -14,11 +14,11 @@
 
 <script>
 import ShopCart from 'components/shop-cart/shop-cart'
-// import popupMixin from 'common/mixins/popup'
+import popupMixin from 'common/mixins/popup'
 
 export default {
   name: 'shop-cart-sticky',
-  //   mixins: [popupMixin],
+  mixins: [popupMixin],
   props: {
     selectFoods: {
       type: Array,
