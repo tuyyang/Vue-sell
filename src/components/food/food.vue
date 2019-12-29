@@ -91,17 +91,10 @@
 <script>
 import moment from 'moment'
 import CartControl from 'components/cart-control/cart-control'
-<<<<<<< HEAD
-// import RatingSelect from 'components/rating-select/rating-select'
-// import Split from "components/split/split";
-// import ratingMixin from "common/mixins/rating";
-import popupMixin from 'common/mixins/popup'
-=======
 import RatingSelect from 'components/rating-select/rating-select'
 import Split from "components/split/split";
 import ratingMixin from "common/mixins/rating";
 import popupMixin from "common/mixins/popup";
->>>>>>> food-detail
 
 const EVENT_SHOW="show"
 const EVENT_ADD="add"
