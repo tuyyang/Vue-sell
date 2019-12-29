@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="shopcart">
-      <div class="content">
+      <div class="content" @click="toggleList">
         <div class="content-left">
           <div class="logo-wrapper">
             <div class="logo" :class="{ highlight: totalCount > 0 }">
@@ -10,14 +10,16 @@
                 :class="{ highlight: totalCount > 0 }"
               ></i>
             </div>
-            <div class="num" v-show="totalCount > 0"></div>
+            <div class="num" v-show="totalCount > 0">
+              <bubble :num="totalCount"></bubble>
+            </div>
           </div>
           <div class="price" :class="{ highlight: totalPrice > 0 }">
             ￥{{ totalPrice }}
           </div>
           <div class="desc">另需配送费￥{{ deliveryPrice }}元</div>
         </div>
-        <div class="content-right">
+        <div class="content-right" @click="pay">
           <div class="pay" :class="payClass">{{ payDesc }}</div>
         </div>
       </div>
@@ -68,11 +70,20 @@ export default {
     minPrice: {
       type: Number,
       default: 0
+    },
+    sticky: {
+      type: Boolean,
+      default: false
+    },
+    fold: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
     return {
-      balls: createBalls()
+      balls: createBalls(),
+      listFold: this.fold
     }
   },
   created() {
@@ -112,6 +123,28 @@ export default {
     }
   },
   methods: {
+    toggleList() {
+      if(this.listFold) {
+        if(!this.totalCount) {
+          return
+        }
+        this.listFold=false
+        this._showShopCartList()
+      } else {
+        this.listFold=true
+        this._showShopCartList()
+      }
+    },
+    pay(e) {
+      if(this.totalPrice<this.minPrice) {
+        return
+      }
+      this.$createDialog({
+        title: '支付',
+        content: `您需要支付${this.totalPrice}元`
+      }).show()
+      e.stopPropagation()
+    },
     drop(el) {
       for(let i=0; i<this.balls.length; i++) {
         const ball=this.balls[i]
@@ -146,6 +179,44 @@ export default {
         ball.show=false
         el.style.display='none'
       }
+    },
+    _showShopCartList() {
+      this.shopCartListComp=this.shopCartListComp||this.$createShopCartList({
+        $props: {
+          selectFoods: 'selectFoods'
+        },
+        $events: {
+          leave: () => {
+            this._hideShopCartSticky()
+          },
+          hide: () => {
+            this.listFold=true
+          },
+          add: (el) => {
+            this.shopCartStickyComp.drop(el)
+          }
+        }
+      })
+      this.shopCartListComp.show()
+    },
+    _showShopCartSticky() {
+      this.shopCartStickyComp=this.shopCartStickyComp||this.$createShopCartSticky({
+        $props: {
+          selectFoods: 'selectFoods',
+          deliveryPrice: 'deliveryPrice',
+          minPrice: 'minPrice',
+          fold: 'listFold',
+          list: this.shopCartListComp
+        }
+      })
+      this.shopCartStickyComp.show()
+    },
+    _hideShopCartList() {
+      const list=this.sticky? this.$parent.list:this.shopCartListComp
+      list.hide&&list.hide()
+    },
+    _hideShopCartSticky() {
+      this.shopCartStickyComp.hide()
     }
   },
   components: {

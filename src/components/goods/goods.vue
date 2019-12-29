@@ -36,7 +36,12 @@
           :title="good.name"
         >
           <ul>
-            <li class="food-item" v-for="food in good.foods" :key="food.name">
+            <li
+              @click="selectFood(food)"
+              class="food-item"
+              v-for="food in good.foods"
+              :key="food.name"
+            >
               <div class="icon">
                 <img :src="food.icon" width="57" height="57" />
               </div>
@@ -121,7 +126,7 @@ export default {
         const {type, name, foods}=good
         let count=0
         foods.forEach((food) => {
-          count+=food.count||0
+          count+=(food.count||0)
         })
         ret.push({type, name, count})
       })
