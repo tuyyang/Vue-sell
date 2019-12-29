@@ -151,6 +151,9 @@ export default {
           food: 'selectedFood'
         },
         $events: {
+          leave: () => {
+            this._hideShopCartList()
+          },
           add: (target) => {
             this.shopCartStickyComp.drop(target)
           },
